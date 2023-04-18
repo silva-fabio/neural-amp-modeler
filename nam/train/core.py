@@ -17,9 +17,9 @@ import pytorch_lightning as pl
 import torch
 from torch.utils.data import DataLoader
 
-from ..data import REQUIRED_RATE, Split, init_dataset, wav_to_np
-from ..models import Model
-from ._version import Version
+from nam.data import REQUIRED_RATE, Split, init_dataset, wav_to_np
+from nam.models import Model
+from nam.train._version import Version
 
 
 class Architecture(Enum):

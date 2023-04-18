@@ -16,6 +16,7 @@ def _ensure_graceful_shutdowns():
 
 _ensure_graceful_shutdowns()
 
+import sys
 import json
 from argparse import ArgumentParser
 from pathlib import Path
@@ -32,6 +33,7 @@ from torch.utils.data import DataLoader
 from nam.data import ConcatDataset, ParametricDataset, Split, init_dataset
 from nam.models import Model
 from nam.util import timestamp
+from nam.train.colab import run as run_colab
 
 torch.manual_seed(0)
 
@@ -216,6 +218,14 @@ def main_inner(
 
 if __name__ == "__main__":
     parser = ArgumentParser()
+    if "--easy-colab" in sys.argv or "-c" in sys.argv:
+        parser.add_argument("--easy-colab", "-c", action="store_true", help="Run easy colab training")
+        parser.add_argument("--epochs", "-e", type=int, default=100, help="Set epoch when running easy colab training")
+        parser.add_argument("--arch", "-a", type=str, default="standard", help="Set architecture when running easy colab training")
+        args = parser.parse_args()
+        print(f"* Runing easy colab: run(epochs={args.epochs}, architecture={args.arch})")
+        run_colab(epochs=args.epochs, architecture=args.arch)
+        sys.exit(0)
     parser.add_argument("data_config_path", type=str)
     parser.add_argument("model_config_path", type=str)
     parser.add_argument("learning_config_path", type=str)

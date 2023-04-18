@@ -69,7 +69,8 @@ NAM includes a training script that can be run from the terminal. In order to ru
 #### Download audio files
 Download the [v1_1_1.wav](https://drive.google.com/file/d/1v2xFXeQ9W2Ks05XrqsMCs2viQcKPAwBk/view?usp=share_link) and [overdrive.wav](https://drive.google.com/file/d/14w2utgL16NozmESzAJO_I0_VCt-5Wgpv/view?usp=share_link) to a folder of your choice 
 
-#### Update data configuration 
+### Version 1
+#### Update data configuration
 Edit `bin/train/data/single_pair.json` to point to relevant audio files 
 ```json
     "common": {
@@ -121,6 +122,20 @@ path/to/exported_models/MyAmp
 
 Then, point the plugin at the exported `model.nam` file and you're good to go!
 
+### Version 2 (running the easy colab version)
+
+```bash
+python bin/train/main.py -c
+```
+
+To set different epochs or architecture, you can use a command similar to the one below:
+
+```bash
+python bin/train/main.py -c -e 1000 -a feather
+```
+
+After run the command, it is required that you close the delay plot window to start the training process.
+
 ### Other utilities
 
 #### Run a model on an input signal ("reamping")
@@ -133,4 +148,54 @@ path/to/source.wav \
 path/to/config_model.json \
 path/to/checkpoints/epoch=123_val_loss=0.000010.ckpt \
 path/to/output.wav
+```
+
+### Installation with pip (do not require Anaconda)
+
+(This installation process may be better suited for developers)
+
+Create a virtualenv and install the dependencies packages
+
+For Mac:
+```bash
+python -m venv venv
+source venv/bin/activate
+pip3 install -r requirements.txt
+```
+
+For Windows:
+```bash
+python -m venv venv
+venv\Scripts\activate
+pip3 install -r requirements.txt
+```
+
+While the default PyTorch installation on many Macs comes with GPU support enabled, it's not the case for Windows.
+
+To check whether your machine has PyTorch GPU capability, you can access this page:
+
+https://pytorch.org/get-started/locally/
+
+So, for Windows to use PyTorch with GPU enabled, you may need to uninstall the existing default version
+(if installed via requirements.txt) and replace it with the GPU version, like so:
+
+Example for Windows (assuming that CUDA is already installed):
+```bash
+pip3 uninstall torch
+pip3 install torch  --index-url https://download.pytorch.org/whl/cu117
+```
+
+Visit this page (https://pytorch.org/get-started/locally/) to find the pip command recommended for your machine
+to install PyTorch with GPU support, and use it instead.
+
+Before running the scripts, it's also necessary to set the PYTHONPATH variable as follows:
+
+For Mac:
+```bash
+export PYTHONPATH=`pwd`
+```
+
+For Windows:
+```bash
+set PYTHONPATH=%cd%
 ```
